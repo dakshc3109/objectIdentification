@@ -11,7 +11,7 @@ function setup(){
 }
 
 function preload(){
-    img = loadImage("apple.jpg");
+    img = loadImage("dog_cat.jpg");
 }
 
 function draw(){
