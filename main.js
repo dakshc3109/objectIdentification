@@ -3,19 +3,22 @@ var status = "";
 object = [];
 
 function setup(){
-    canvas = createCanvas(640, 420);
+    canvas = createCanvas(380, 380);
     //canvas.center();
     canvas.position(330, 120);;
     objetDetector = ml5.objectDetector("cocossd", modelLoaded);
     document.getElementById("status").innerHTML = "Status: Detecting object";
+    video = createCapture(VIDEO);
+    video.size(380, 380)
+    video.hide();
 }
 
 function preload(){
-    img = loadImage("dog_cat.jpg");
+    //img = loadImage("dog_cat.jpg");
 }
 
 function draw(){
-    image(img, 0, 0, 640, 420);
+    image(video, 0, 0, 380, 380);
     /*stroke("#ff0000");
     fill("#ff0000");
     text("Dog", 130, 75);
@@ -28,6 +31,7 @@ function draw(){
     noFill();
     rect(310, 110, 250, 300);*/
     if(status != ""){
+        objetDetector.detect(video, gotResult);
         for(i = 0; i < object.length; i++){
             document.getElementById("status").innerHTML = "Status: object detected";
             fill("#ff0000");
@@ -39,6 +43,7 @@ function draw(){
             stroke("#ff0000");
             rect(object[i].x, object[i].y, object[i].width, object[i].height);
             console.log(object[i].x+" "+object[i].y);
+            document.getElementById("number-of-objects").innerHTML = "Nuber of objects detected: "+object.length;
         }
     }
 }
@@ -46,7 +51,7 @@ function draw(){
 function modelLoaded(){
     console.log("model loaded");
     status = true;
-    objetDetector.detect(img, gotResult);
+    objetDetector.detect(video, gotResult);
 }
 
 function gotResult(error, results){
